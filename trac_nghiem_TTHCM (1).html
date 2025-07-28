@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trắc nghiệm Tư tưởng Hồ Chí Minh</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    .question { background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .question h3 { margin-top: 0; }
+    .answers label { display: block; margin: 5px 0; }
+    #submit { padding: 10px 20px; font-size: 16px; margin-top: 20px; }
+    #result { font-weight: bold; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h2>Trắc nghiệm Tư tưởng Hồ Chí Minh</h2>
+<form id="quizForm">
+<!-- Các câu hỏi sẽ được chèn tự động ở đây -->
+</form>
+<button id="submit">Nộp bài</button>
+<div id="result"></div>
+
+<script>
+const questions = [
+  {
+    question: "Nét đặc sắc nhất trong tư tưởng Hồ Chí Minh là:",
+    options: [
+      "vạch ra con đường đấu tranh giành lại độc lập dân tộc.",
+      "kế thừa và phát triển các giá trị truyền thống tốt đẹp của dân tộc.",
+      "vận dụng và phát triển sáng tạo CN Mác - Lênin trong giải quyết vấn đề cách mạng VN",
+      "vạch ra con đường giải phóng dân tộc và định hướng cho sự phát triển của dân tộc."
+    ],
+    answer: "C"
+  }
+  // TODO: Thêm 49 câu còn lại
+];
+
+const form = document.getElementById('quizForm');
+questions.forEach((q, index) => {
+  const qDiv = document.createElement('div');
+  qDiv.className = 'question';
+  qDiv.innerHTML = `<h3>${index + 1}. ${q.question}</h3>` +
+    q.options.map((opt, i) => {
+      const optLetter = String.fromCharCode(65 + i);
+      return `<label><input type="radio" name="q${index + 1}" value="${optLetter}"> ${optLetter}. ${opt}</label>`;
+    }).join('');
+  form.appendChild(qDiv);
+});
+
+const correctAnswers = Object.fromEntries(questions.map((q, i) => ["q" + (i + 1), q.answer]));
+
+document.getElementById('submit').onclick = function () {
+  let score = 0;
+  let total = questions.length;
+  for (let key in correctAnswers) {
+    const radios = document.getElementsByName(key);
+    for (const radio of radios) {
+      if (radio.checked && radio.value === correctAnswers[key]) {
+        score++;
+        break;
+      }
+    }
+  }
+  document.getElementById('result').innerText = `Bạn đúng ${score} / ${total} câu.`;
+};
+</script>
+
+</body>
+</html>
